@@ -23,7 +23,7 @@ const i18n = {
         reset_btn: "새로운 분석 시작",
         err_msg: "분석 중 오류가 발생했습니다.",
         share_title: "결과 공유 및 저장",
-        privacy_notice: "※ 업로드된 사진과 분석 결과는 서버에 저장 및 수집되지 않으며 분석 즉시 폐기됩니다.",
+        privacy_notice: "※ 업로드된 사진은 수집되지 않으며 즉시 폐기됩니다. 본 서비스의 결과는 오락용으로만 즐겨주세요.",
         err_rate_limit: "오늘 미래를 너무 많이 엿보셨군요! 🔮\n더 이상의 천기누설은 위험합니다. 잠시 쉬었다가 나중에 다시 찾아주세요!",
         ai_prompt: `당신은 세련된 감각을 지닌 데이터 기반 성향 분석가입니다. 제공된 손바닥 사진의 선(생명선, 두뇌선, 감정선) 패턴을 읽어 차분하고 정제된 에세이 톤으로 분석하세요. 한국어로 응답하세요.
 [규칙]
@@ -56,7 +56,7 @@ const i18n = {
         reset_btn: "Start New Scan",
         err_msg: "An error occurred during analysis.",
         share_title: "Share Your Result",
-        privacy_notice: "※ Uploaded photos and analysis results are not stored or collected, and are immediately discarded.",
+        privacy_notice: "※ Photos are discarded immediately without being collected. This service is for entertainment purposes only.",
         err_rate_limit: "You've peeked into your future a bit too much today! 🔮\nThe universe needs a break. Please try again later!",
         ai_prompt: `You are a modern, sophisticated data-driven palmistry analyst. Analyze the palm lines and write a calming, refined essay. Respond in natural, elegant English.
 [Rules]
@@ -89,7 +89,7 @@ Respond ONLY with this JSON:
         reset_btn: "新しい分析を開始",
         err_msg: "分析中にエラーが発生しました。",
         share_title: "結果を保存・シェア",
-        privacy_notice: "※ アップロードされた写真や分析結果はサーバーに保存・収集されず、直ちに破棄されます。",
+        privacy_notice: "※ 写真は収集されず、直ちに破棄されます。本サービスの結果はエンターテインメント目的としてのみお楽しみください。",
         err_rate_limit: "今日、未来を覗き見すぎましたね！ 🔮\nこれ以上の天機漏洩は危険です。少し休んでからまたお越しください！",
         ai_prompt: `あなたは現代的で洗練されたデータ主導の手相アナリストです。提供された手相のパターンを分析し、落ち着いた洗練されたエッセイのように解釈してください。自然で洗練された日本語で答えてください。
 [ルール]
