@@ -7,7 +7,13 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app, resources={r"/api/*": {"origins": "*"}})
+# 보안 업데이트: 허용된 도메인(Vercel 주소 및 로컬 호스트)에서만 API 호출을 허용합니다. (CORS 공격 방어)
+ALLOWED_ORIGINS = [
+    "https://palmistry-five.vercel.app",
+    "http://127.0.0.1:8000", 
+    "http://localhost:8000"
+]
+CORS(app, resources={r"/api/*": {"origins": ALLOWED_ORIGINS}})
 
 API_KEY = os.environ.get("GEMINI_API_KEY")
 GEMINI_URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={API_KEY}"
