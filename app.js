@@ -80,7 +80,7 @@ function startAnalysis(base64Image) {
 
 async function analyzeWithGemini(base64Image, apiKey) {
     const base64Data = base64Image.split(',')[1];
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
 
     const prompt = `너는 30년 경력의 신비롭고 유쾌한 손금 전문가야. 주어진 손바닥 사진을 보고 생명선, 두뇌선, 감정선을 파악해서 유쾌하고 긍정적인 운세 풀이를 해줘.
 반드시 아래 JSON 형식으로만 응답해줘. 다른 말은 절대 덧붙이지 마.
