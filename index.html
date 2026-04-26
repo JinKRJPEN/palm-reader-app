@@ -130,6 +130,17 @@
                     <div id="result-text" class="text-brand-300 text-[14px] leading-[1.8] font-light whitespace-pre-line tracking-wide opacity-90">
                     </div>
                 </div>
+
+                <!-- 심층 분석 영역 -->
+                <div id="deep-dive-section" class="space-y-4 pt-4 border-t border-brand-800/50 hidden fade-in">
+                    <p class="text-[11px] text-brand-400 font-light tracking-wide text-center mb-4 uppercase">Advanced Reading</p>
+                    <div class="grid grid-cols-3 gap-3">
+                        <button onclick="analyzeDeepDive('career')" class="py-3 border border-brand-800 rounded-xl text-brand-300 text-[11px] uppercase tracking-widest hover:bg-brand-800/50 hover:text-brand-100 transition-colors">Career<br><span class="text-[9px] text-brand-500 block mt-1">사업/직업</span></button>
+                        <button onclick="analyzeDeepDive('wealth')" class="py-3 border border-brand-800 rounded-xl text-brand-300 text-[11px] uppercase tracking-widest hover:bg-brand-800/50 hover:text-brand-100 transition-colors">Wealth<br><span class="text-[9px] text-brand-500 block mt-1">금전운</span></button>
+                        <button onclick="analyzeDeepDive('love')" class="py-3 border border-brand-800 rounded-xl text-brand-300 text-[11px] uppercase tracking-widest hover:bg-brand-800/50 hover:text-brand-100 transition-colors">Love<br><span class="text-[9px] text-brand-500 block mt-1">연애/결혼</span></button>
+                    </div>
+                    <div id="deep-dive-result" class="mt-6 text-brand-200 text-[14px] leading-[1.8] font-light whitespace-pre-line tracking-wide opacity-90 hidden bg-brand-900/40 p-5 rounded-2xl border border-brand-800/50"></div>
+                </div>
             </div>
 
             <button onclick="resetApp()" class="w-full py-4 mt-4 bg-brand-100 text-brand-950 hover:bg-white rounded-2xl font-medium text-[13px] tracking-wide transition-all active:scale-[0.98]">
@@ -138,6 +149,6 @@
         </section>
     </main>
 
-    <script src="app.js?v=4"></script>
+    <script src="app.js?v=5"></script>
 </body>
 </html>

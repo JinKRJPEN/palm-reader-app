@@ -20,6 +20,7 @@ const loadingTexts = [
     "COMPLETING DATA"
 ];
 let loadingInterval;
+let currentBase64Image = '';
 
 function handleImageUpload(event) {
     const file = event.target.files[0];
@@ -34,6 +35,7 @@ function handleImageUpload(event) {
 }
 
 function startAnalysis(base64Image) {
+    currentBase64Image = base64Image;
     const apiKeyInput = document.getElementById('api-key');
     const apiKey = apiKeyInput ? apiKeyInput.value.trim() : '';
 
@@ -144,7 +146,75 @@ function showResults(data) {
         animateValue(statVitalityVal, 0, data.vitality, 1200);
         animateValue(statIntelligenceVal, 0, data.intelligence, 1200);
         animateValue(statCharmVal, 0, data.charm, 1200);
+        
+        // Show deep dive section after basic results are loaded
+        setTimeout(() => {
+            document.getElementById('deep-dive-section').classList.remove('hidden');
+        }, 1500);
     }, 400);
+}
+
+async function analyzeDeepDive(topic) {
+    const apiKeyInput = document.getElementById('api-key');
+    const apiKey = apiKeyInput ? apiKeyInput.value.trim() : '';
+
+    if (!apiKey) {
+        alert('API Key를 다시 확인해주세요.');
+        return;
+    }
+
+    const deepDiveResult = document.getElementById('deep-dive-result');
+    deepDiveResult.classList.remove('hidden');
+    deepDiveResult.innerHTML = '<span class="animate-pulse text-brand-400 text-sm">해당 영역을 심층 분석 중입니다...</span>';
+
+    const base64Data = currentBase64Image.split(',')[1];
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+
+    let topicName = '';
+    if (topic === 'career') topicName = '사업/직업운 (운명선과 사업선 중심)';
+    else if (topic === 'wealth') topicName = '금전운 (재물선과 태양선 중심)';
+    else if (topic === 'love') topicName = '연애/결혼운 (결혼선과 감정선 중심)';
+
+    const prompt = `당신은 현대적이고 세련된 감각을 지닌 데이터 기반 분석가입니다. 방금 제공된 동일한 손바닥 사진을 다시 보고, 이번에는 오직 [${topicName}]에 대해서만 집중적으로 심층 분석해주세요.
+
+[중요 규칙]
+1. 과장된 감탄사나 점쟁이 말투는 절대 금지합니다. 담백하고 세련된 리포트 톤으로 작성하세요.
+2. 마크다운 기호(**, *, # 등)는 절대 사용하지 마세요. 오직 순수 텍스트만 출력하세요.
+3. 2단락 정도로, 분석 근거가 되는 선의 모양과 그에 따른 긍정적인 잠재력을 기술하세요.
+4. JSON 형식이 아닌, 순수한 텍스트 문자열(에세이 형태)만 그대로 출력하세요.`;
+
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                contents: [{
+                    parts: [
+                        { text: prompt },
+                        {
+                            inline_data: {
+                                mime_type: "image/jpeg",
+                                data: base64Data
+                            }
+                        }
+                    ]
+                }],
+                generationConfig: {
+                    temperature: 0.6
+                }
+            })
+        });
+
+        if (!response.ok) throw new Error('API 요청 실패');
+        const data = await response.json();
+        const text = data.candidates[0].content.parts[0].text;
+        
+        deepDiveResult.innerText = '';
+        typeWriterEffect(deepDiveResult, text, 20);
+    } catch (err) {
+        deepDiveResult.innerText = '분석 중 오류가 발생했습니다.';
+        console.error(err);
+    }
 }
 
 function typeWriterEffect(element, text, speed) {
@@ -187,6 +257,10 @@ function resetApp() {
     statIntelligenceVal.innerText = '0';
     statCharmVal.innerText = '0';
     resultText.innerHTML = '';
+    
+    document.getElementById('deep-dive-section').classList.add('hidden');
+    document.getElementById('deep-dive-result').classList.add('hidden');
+    document.getElementById('deep-dive-result').innerText = '';
     
     document.getElementById('camera-input').value = '';
 }
