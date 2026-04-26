@@ -62,6 +62,12 @@ def analyze():
         "contents": [{
             "parts": parts
         }],
+        "safetySettings": [
+            { "category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_NONE" },
+            { "category": "HARM_CATEGORY_HATE_SPEECH", "threshold": "BLOCK_NONE" },
+            { "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT", "threshold": "BLOCK_NONE" },
+            { "category": "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_NONE" }
+        ],
         "generationConfig": {
             "response_mime_type": "application/json" if "JSON" in prompt else "text/plain",
             "temperature": 0.6
@@ -73,8 +79,12 @@ def analyze():
         response.raise_for_status()
         return jsonify(response.json())
     except requests.exceptions.RequestException as e:
-        print("API Error:", e)
-        return jsonify({"error": "Gemini API 통신 중 오류가 발생했습니다."}), 500
+        error_details = response.text if 'response' in locals() and response is not None else str(e)
+        print("API Error Details:", error_details)
+        return jsonify({
+            "error": "Gemini API 통신 중 오류가 발생했습니다.",
+            "details": error_details
+        }), 500
 
 if __name__ == '__main__':
     print("Palm Reader Backend Server started on port 5000.")
