@@ -23,7 +23,7 @@ def get_client_ip():
 
 # 트래픽 과부하 방지를 위한 Rate Limiter 설정 (메모리 저장소 사용)
 limiter = Limiter(
-    get_remote_address=get_client_ip,
+    key_func=get_client_ip,
     app=app,
     storage_uri="memory://",
 )
