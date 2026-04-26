@@ -1,10 +1,10 @@
-# ✋ PALM INSIGHT
+# ✋ LINEA
 
 A modern, sleek, and AI-powered web application for personalized palmistry readings. Uncover your hidden potential through the lines of your hands.
 
 [**🌍 View Live Site**](https://palmistry-five.vercel.app)
 
-![Palm Insight Preview](https://img.shields.io/badge/AI-Powered-purple?style=for-the-badge) ![Gemini](https://img.shields.io/badge/Gemini_2.5_Flash-blue?style=for-the-badge) ![Status](https://img.shields.io/badge/Status-Active-brightgreen?style=for-the-badge)
+![LINEA Preview](https://img.shields.io/badge/AI-Powered-purple?style=for-the-badge) ![Gemini](https://img.shields.io/badge/Gemini_2.5_Flash-blue?style=for-the-badge) ![Status](https://img.shields.io/badge/Status-Active-brightgreen?style=for-the-badge)
 
 ---
 
