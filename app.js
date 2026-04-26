@@ -477,10 +477,23 @@ async function saveResultAsImage() {
     const watermark = document.getElementById('watermark');
     const shareSec = document.getElementById('share-section');
     const resetBtn = document.querySelector('button[onclick="resetApp()"]');
+    const imgPreview = target.querySelector('.aspect-\\[4\\/3\\]');
+    const deepDiveSec = document.getElementById('deep-dive-section');
     
+    // Hide unwanted elements for clean capture
     watermark.classList.remove('hidden');
+    watermark.classList.add('block');
     shareSec.classList.add('hidden');
     if(resetBtn) resetBtn.style.display = 'none';
+    if(imgPreview) imgPreview.style.display = 'none';
+    
+    // Store deep dive display state to restore later
+    const deepDiveWasHidden = deepDiveSec.classList.contains('hidden');
+    if(deepDiveSec) deepDiveSec.style.display = 'none';
+    
+    // Add padding to target for better image composition
+    target.classList.add('pt-12', 'pb-16');
+    target.classList.remove('pt-4', 'pb-12');
     
     try {
         const canvas = await html2canvas(target, {
@@ -496,9 +509,16 @@ async function saveResultAsImage() {
         console.error("Capture failed", e);
     }
     
+    // Restore everything
     watermark.classList.add('hidden');
+    watermark.classList.remove('block');
     shareSec.classList.remove('hidden');
     if(resetBtn) resetBtn.style.display = 'block';
+    if(imgPreview) imgPreview.style.display = 'block';
+    if(deepDiveSec) deepDiveSec.style.display = deepDiveWasHidden ? '' : 'block';
+    
+    target.classList.remove('pt-12', 'pb-16');
+    target.classList.add('pt-4', 'pb-12');
 }
 
 function shareTo(platform) {

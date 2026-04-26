@@ -144,8 +144,8 @@
                 </div>
             </div>
 
-            <div class="space-y-10 px-1">
-                <div class="space-y-6">
+            <div class="space-y-10 px-1 w-full">
+                <div class="space-y-6 bg-brand-900/40 p-6 rounded-3xl border border-brand-800/50 backdrop-blur-sm shadow-inner">
                     <div class="border-b border-brand-800 pb-3 flex items-center justify-between">
                         <div>
                             <h3 class="text-[10px] uppercase tracking-widest text-brand-500 mb-1">Index</h3>
@@ -162,7 +162,7 @@
                                 <span class="text-brand-400" data-i18n="vitality">Vitality (생명)</span>
                                 <span class="text-brand-100 font-medium" id="stat-vitality-val">0</span>
                             </div>
-                            <div class="w-full bg-brand-900 h-[1px] overflow-hidden relative">
+                            <div class="w-full bg-brand-950 h-[2px] overflow-hidden relative rounded-full">
                                 <div id="stat-vitality" class="absolute left-0 top-0 bg-brand-200 h-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(255,255,255,0.8)]" style="width: 0%"></div>
                             </div>
                         </div>
@@ -172,7 +172,7 @@
                                 <span class="text-brand-400" data-i18n="intelligence">Intelligence (두뇌)</span>
                                 <span class="text-brand-100 font-medium" id="stat-intelligence-val">0</span>
                             </div>
-                            <div class="w-full bg-brand-900 h-[1px] overflow-hidden relative">
+                            <div class="w-full bg-brand-950 h-[2px] overflow-hidden relative rounded-full">
                                 <div id="stat-intelligence" class="absolute left-0 top-0 bg-brand-200 h-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(255,255,255,0.8)]" style="width: 0%"></div>
                             </div>
                         </div>
@@ -182,14 +182,14 @@
                                 <span class="text-brand-400" data-i18n="emotion">Emotion (감정)</span>
                                 <span class="text-brand-100 font-medium" id="stat-charm-val">0</span>
                             </div>
-                            <div class="w-full bg-brand-900 h-[1px] overflow-hidden relative">
+                            <div class="w-full bg-brand-950 h-[2px] overflow-hidden relative rounded-full">
                                 <div id="stat-charm" class="absolute left-0 top-0 bg-brand-200 h-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(255,255,255,0.8)]" style="width: 0%"></div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="space-y-5">
+                <div class="space-y-5 px-2">
                     <div class="border-b border-brand-800 pb-3">
                         <h3 class="text-[10px] uppercase tracking-widest text-brand-500 mb-1">Insight</h3>
                         <p class="text-sm font-medium text-brand-200 tracking-wide" data-i18n="ins_title">상세 분석</p>
@@ -199,7 +199,7 @@
                 </div>
 
                 <!-- 심층 분석 영역 -->
-                <div id="deep-dive-section" class="space-y-5 pt-8 border-t border-brand-800/50 hidden fade-in">
+                <div id="deep-dive-section" class="space-y-5 pt-8 border-t border-brand-800/50 hidden fade-in px-2">
                     <p class="text-[11px] text-brand-400 font-light tracking-wide text-center uppercase" data-i18n="deep_title">특정 영역의 더 깊은 분석이 필요하신가요?</p>
                     <div class="grid grid-cols-3 gap-3">
                         <button onclick="analyzeDeepDive('career')" class="relative py-4 border border-brand-800 rounded-2xl text-brand-300 text-[11px] uppercase tracking-widest hover:bg-brand-900 hover:border-brand-600 transition-all group overflow-hidden">
@@ -232,7 +232,7 @@
             </button>
             
             <!-- 워터마크 (캡처용 숨김 요소) -->
-            <div id="watermark" class="hidden absolute bottom-6 left-0 right-0 text-center text-[10px] text-brand-400 font-light tracking-widest opacity-80 z-50">
+            <div id="watermark" class="hidden text-center text-[10px] text-brand-400 font-bold tracking-[0.3em] opacity-100 mt-12 mb-4 pb-4">
                 L I N E A - palmistry-five.vercel.app
             </div>
         </section>
