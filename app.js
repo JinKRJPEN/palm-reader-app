@@ -13,13 +13,11 @@ const statVitalityVal = document.getElementById('stat-vitality-val');
 const statIntelligenceVal = document.getElementById('stat-intelligence-val');
 const statCharmVal = document.getElementById('stat-charm-val');
 
-// Loading Texts Animation
 const loadingTexts = [
-    "운명의 선을 읽는 중...",
-    "생명선의 깊이를 파악하는 중...",
-    "두뇌선의 흐름을 따라가는 중...",
-    "감정선의 온도를 느끼는 중...",
-    "별의 기운을 모으는 중..."
+    "ANALYZING LINES",
+    "READING PATTERNS",
+    "EXTRACTING INSIGHTS",
+    "COMPLETING DATA"
 ];
 let loadingInterval;
 
@@ -27,45 +25,38 @@ function handleImageUpload(event) {
     const file = event.target.files[0];
     if (!file) return;
 
-    // Show preview
     const reader = new FileReader();
     reader.onload = (e) => {
         previewImage.src = e.target.result;
-        startAnalysis(e.target.result); // Base64 image
+        startAnalysis(e.target.result);
     };
     reader.readAsDataURL(file);
 }
 
 function startAnalysis(base64Image) {
-    // Hide upload, show loading
-    uploadSection.classList.add('hidden');
+    const apiKeyInput = document.getElementById('api-key');
+    const apiKey = apiKeyInput ? apiKeyInput.value.trim() : '';
+
+    if (!apiKey) {
+        alert('API Key를 입력해주세요.');
+        return;
+    }
+
+    localStorage.setItem('gemini_api_key', apiKey);
+
+    uploadSection.style.display = 'none';
     loadingSection.classList.remove('hidden');
     loadingSection.classList.add('flex');
 
-    // Start loading text animation
     let textIndex = 0;
     const loadingTextElement = document.getElementById('loading-text');
-    loadingTextElement.innerText = loadingTexts[textIndex]; // initial
+    loadingTextElement.innerText = loadingTexts[textIndex];
     
     loadingInterval = setInterval(() => {
         textIndex = (textIndex + 1) % loadingTexts.length;
         loadingTextElement.innerText = loadingTexts[textIndex];
     }, 1200);
 
-    const apiKeyInput = document.getElementById('api-key');
-    const apiKey = apiKeyInput ? apiKeyInput.value.trim() : '';
-
-    if (!apiKey) {
-        clearInterval(loadingInterval);
-        alert('Gemini API Key를 입력해주세요!');
-        resetApp();
-        return;
-    }
-
-    // Save key to localStorage for convenience
-    localStorage.setItem('gemini_api_key', apiKey);
-
-    // Call Gemini Vision API
     analyzeWithGemini(base64Image, apiKey)
         .then(data => {
             clearInterval(loadingInterval);
@@ -82,13 +73,20 @@ async function analyzeWithGemini(base64Image, apiKey) {
     const base64Data = base64Image.split(',')[1];
     const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
 
-    const prompt = `너는 30년 경력의 신비롭고 유쾌한 손금 전문가야. 주어진 손바닥 사진을 보고 생명선, 두뇌선, 감정선을 파악해서 유쾌하고 긍정적인 운세 풀이를 해줘.
-반드시 아래 JSON 형식으로만 응답해줘. 다른 말은 절대 덧붙이지 마.
+    const prompt = `당신은 현대적이고 세련된 감각을 지닌 데이터 기반 성향 분석가입니다. 손바닥 사진의 선(생명선, 두뇌선, 감정선) 패턴을 시각적 데이터로 해석하여, 깊이 있고 차분한 톤의 에세이처럼 작성해주세요.
+
+[중요 규칙]
+1. 과장된 감탄사나 오래된 점쟁이/도사 같은 말투(오호라, ~하구나, ~하오 등)는 절대 사용하지 마세요. 
+2. 인공지능이 출력하는 특유의 형식적인 말투나 마크다운 기호(**, *, # 등)는 절대 사용하지 마세요. 모든 텍스트는 순수한 평문(Plain text)으로만 작성해야 합니다.
+3. 세련되고 정제된 어휘를 사용하세요. (예: "매우 훌륭합니다" 대신 "균형 잡힌 흐름을 보여줍니다" 등)
+4. 사용자의 잠재력과 성향을 담백하고 객관적이며 긍정적인 방향으로 짚어주세요.
+
+아래 JSON 형식으로만 응답하세요. 다른 텍스트는 덧붙이지 마세요.
 {
-  "vitality": 10에서 100 사이의 정수 (생명선 평가),
-  "intelligence": 10에서 100 사이의 정수 (두뇌선 평가),
-  "charm": 10에서 100 사이의 정수 (감정선 평가),
-  "reading": "유쾌하고 긍정적인 도사의 말투로 작성된 상세한 손금 풀이 텍스트 (줄바꿈 포함)"
+  "vitality": 10에서 100 사이의 정수,
+  "intelligence": 10에서 100 사이의 정수,
+  "charm": 10에서 100 사이의 정수,
+  "reading": "순수한 텍스트로 작성된 세련된 분석 내용 (줄바꿈 포함)"
 }`;
 
     const response = await fetch(url, {
@@ -108,7 +106,7 @@ async function analyzeWithGemini(base64Image, apiKey) {
             }],
             generationConfig: {
                 response_mime_type: "application/json",
-                temperature: 0.7
+                temperature: 0.6
             }
         })
     });
@@ -125,22 +123,19 @@ async function analyzeWithGemini(base64Image, apiKey) {
         return JSON.parse(resultText);
     } catch (e) {
         console.error("JSON Parsing Error:", resultText);
-        throw new Error('AI가 올바른 형식으로 응답하지 않았습니다.');
+        throw new Error('데이터 처리 중 형식이 올바르지 않았습니다.');
     }
 }
 
 function showResults(data) {
-    // Hide loading, show results
     loadingSection.classList.add('hidden');
     loadingSection.classList.remove('flex');
     resultSection.classList.remove('hidden');
     resultSection.classList.add('flex');
 
-    // Set Text with typewriter effect
     resultText.innerText = "";
-    typeWriterEffect(resultText, data.reading, 30);
+    typeWriterEffect(resultText, data.reading, 20);
 
-    // Animate Stats
     setTimeout(() => {
         statVitality.style.width = `${data.vitality}%`;
         statIntelligence.style.width = `${data.intelligence}%`;
@@ -149,14 +144,17 @@ function showResults(data) {
         animateValue(statVitalityVal, 0, data.vitality, 1200);
         animateValue(statIntelligenceVal, 0, data.intelligence, 1200);
         animateValue(statCharmVal, 0, data.charm, 1200);
-    }, 300);
+    }, 400);
 }
 
 function typeWriterEffect(element, text, speed) {
     let i = 0;
+    // Remove any accidental markdown asterisks left by AI
+    const cleanText = text.replace(/\*\*/g, '').replace(/\*/g, '');
+    
     function type() {
-        if (i < text.length) {
-            element.innerHTML += text.charAt(i) === '\n' ? '<br>' : text.charAt(i);
+        if (i < cleanText.length) {
+            element.innerHTML += cleanText.charAt(i) === '\n' ? '<br>' : cleanText.charAt(i);
             i++;
             setTimeout(type, speed);
         }
@@ -180,9 +178,8 @@ function animateValue(obj, start, end, duration) {
 function resetApp() {
     resultSection.classList.add('hidden');
     resultSection.classList.remove('flex');
-    uploadSection.classList.remove('hidden');
+    uploadSection.style.display = 'flex';
     
-    // Reset stats
     statVitality.style.width = '0%';
     statIntelligence.style.width = '0%';
     statCharm.style.width = '0%';
@@ -191,12 +188,9 @@ function resetApp() {
     statCharmVal.innerText = '0';
     resultText.innerHTML = '';
     
-    // Reset inputs
     document.getElementById('camera-input').value = '';
-    document.getElementById('gallery-input').value = '';
 }
 
-// Load API key on startup
 window.addEventListener('DOMContentLoaded', () => {
     const savedKey = localStorage.getItem('gemini_api_key');
     if (savedKey) {

@@ -6,37 +6,28 @@ body {
     -webkit-tap-highlight-color: transparent;
 }
 
-.animate-spin-reverse {
-    animation: spin-reverse 2s linear infinite;
-}
-
-@keyframes spin-reverse {
-    from {
-        transform: rotate(360deg);
-    }
-    to {
-        transform: rotate(0deg);
-    }
-}
-
-.pulse-slow {
-    animation: pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-@keyframes pulse-slow {
-    0%, 100% {
-        opacity: 1;
-        transform: scale(1);
+@keyframes loading-bar {
+    0% {
+        width: 0%;
+        transform: translateX(-100%);
     }
     50% {
-        opacity: 0.85;
-        transform: scale(1.05);
-        box-shadow: 0 0 50px rgba(139, 92, 246, 0.4);
+        width: 50%;
+        transform: translateX(50%);
     }
+    100% {
+        width: 100%;
+        transform: translateX(200%);
+    }
+}
+
+.animate-loading-bar {
+    width: 30%;
+    animation: loading-bar 1.5s infinite ease-in-out;
 }
 
 .fade-in {
-    animation: fadeIn 0.8s ease-out forwards;
+    animation: fadeIn 1s ease-out forwards;
 }
 
 @keyframes fadeIn {
