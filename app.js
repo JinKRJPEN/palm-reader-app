@@ -22,6 +22,7 @@ const i18n = {
         analysis_comp: "Analysis Complete",
         reset_btn: "새로운 분석 시작",
         err_msg: "분석 중 오류가 발생했습니다.",
+        share_title: "결과 공유 및 저장",
         err_rate_limit: "오늘 미래를 너무 많이 엿보셨군요! 🔮\n더 이상의 천기누설은 위험합니다. 잠시 쉬었다가 나중에 다시 찾아주세요!",
         ai_prompt: `당신은 세련된 감각을 지닌 데이터 기반 성향 분석가입니다. 제공된 손바닥 사진의 선(생명선, 두뇌선, 감정선) 패턴을 읽어 차분하고 정제된 에세이 톤으로 분석하세요. 한국어로 응답하세요.
 [규칙]
@@ -53,6 +54,7 @@ const i18n = {
         analysis_comp: "Analysis Complete",
         reset_btn: "Start New Scan",
         err_msg: "An error occurred during analysis.",
+        share_title: "Share Your Result",
         err_rate_limit: "You've peeked into your future a bit too much today! 🔮\nThe universe needs a break. Please try again later!",
         ai_prompt: `You are a modern, sophisticated data-driven palmistry analyst. Analyze the palm lines and write a calming, refined essay. Respond in natural, elegant English.
 [Rules]
@@ -84,6 +86,7 @@ Respond ONLY with this JSON:
         analysis_comp: "Analysis Complete",
         reset_btn: "新しい分析を開始",
         err_msg: "分析中にエラーが発生しました。",
+        share_title: "結果を保存・シェア",
         err_rate_limit: "今日、未来を覗き見すぎましたね！ 🔮\nこれ以上の天機漏洩は危険です。少し休んでからまたお越しください！",
         ai_prompt: `あなたは現代的で洗練されたデータ主導の手相アナリストです。提供された手相のパターンを分析し、落ち着いた洗練されたエッセイのように解釈してください。自然で洗練された日本語で答えてください。
 [ルール]
@@ -124,6 +127,7 @@ function applyLang() {
             btn.classList.add('text-brand-100', 'font-bold');
         }
     });
+    renderShareButtons();
 }
 
 // 2. DOM & State
@@ -421,6 +425,92 @@ function resetApp() {
     document.getElementById('camera-input-left').value = '';
     document.getElementById('camera-input-right').value = '';
     setMode(currentMode); // reset visuals
+}
+
+function renderShareButtons() {
+    const container = document.getElementById('share-buttons-container');
+    if (!container) return;
+    
+    let html = '';
+    const btnClass = "w-12 h-12 rounded-full border border-brand-800 flex items-center justify-center text-brand-300 hover:bg-brand-800 transition-colors text-[18px]";
+    const saveImgBtn = `<button onclick="saveResultAsImage()" class="${btnClass}" title="Save Image">📸</button>`;
+    const linkBtn = `<button onclick="shareTo('link')" class="${btnClass}" title="Copy Link">🔗</button>`;
+    const xBtn = `<button onclick="shareTo('x')" class="${btnClass}" title="X (Twitter)">𝕏</button>`;
+    const fbBtn = `<button onclick="shareTo('fb')" class="${btnClass}" title="Facebook">FB</button>`;
+    const nativeBtn = `<button onclick="shareTo('native')" class="${btnClass}" title="More (Kakao/Insta)">📲</button>`;
+    const waBtn = `<button onclick="shareTo('wa')" class="${btnClass}" title="WhatsApp">WA</button>`;
+    const redditBtn = `<button onclick="shareTo('reddit')" class="${btnClass}" title="Reddit">RD</button>`;
+    const lineBtn = `<button onclick="shareTo('line')" class="${btnClass}" title="LINE">LI</button>`;
+
+    if (currentLang === 'ko') {
+        html = saveImgBtn + nativeBtn + xBtn + fbBtn + linkBtn;
+    } else if (currentLang === 'en') {
+        html = saveImgBtn + waBtn + xBtn + redditBtn + linkBtn;
+    } else if (currentLang === 'ja') {
+        html = saveImgBtn + lineBtn + xBtn + fbBtn + linkBtn;
+    }
+    
+    container.innerHTML = html;
+}
+
+async function saveResultAsImage() {
+    const target = document.getElementById('result-section');
+    const watermark = document.getElementById('watermark');
+    const shareSec = document.getElementById('share-section');
+    const resetBtn = document.querySelector('button[onclick="resetApp()"]');
+    
+    watermark.classList.remove('hidden');
+    shareSec.classList.add('hidden');
+    if(resetBtn) resetBtn.style.display = 'none';
+    
+    try {
+        const canvas = await html2canvas(target, {
+            backgroundColor: '#0a0a0a',
+            scale: 2,
+            useCORS: true
+        });
+        const link = document.createElement('a');
+        link.download = 'LINEA_Result.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+    } catch (e) {
+        console.error("Capture failed", e);
+    }
+    
+    watermark.classList.add('hidden');
+    shareSec.classList.remove('hidden');
+    if(resetBtn) resetBtn.style.display = 'block';
+}
+
+function shareTo(platform) {
+    const url = encodeURIComponent(window.location.href);
+    const text = encodeURIComponent(i18n[currentLang].title + " - " + i18n[currentLang].subtitle.replace('<br>', ' '));
+
+    if (platform === 'link') {
+        navigator.clipboard.writeText(window.location.href).then(() => {
+            alert("Link copied!");
+        });
+    } else if (platform === 'x') {
+        window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, '_blank');
+    } else if (platform === 'fb') {
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
+    } else if (platform === 'wa') {
+        window.open(`https://api.whatsapp.com/send?text=${text}%20${url}`, '_blank');
+    } else if (platform === 'reddit') {
+        window.open(`https://reddit.com/submit?url=${url}&title=${text}`, '_blank');
+    } else if (platform === 'line') {
+        window.open(`https://social-plugins.line.me/lineit/share?url=${url}`, '_blank');
+    } else if (platform === 'native') {
+        if (navigator.share) {
+            navigator.share({
+                title: "LINEA",
+                text: "AI 손금 분석의 새로운 기준",
+                url: window.location.href
+            }).catch(console.error);
+        } else {
+            alert("이 브라우저에서는 기본 공유 기능을 지원하지 않습니다.");
+        }
+    }
 }
 
 window.addEventListener('DOMContentLoaded', () => {

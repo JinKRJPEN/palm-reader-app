@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -212,11 +213,24 @@
                     </div>
                     <div id="deep-dive-result" class="mt-4 text-brand-200 text-[14px] leading-[1.8] font-light whitespace-pre-line tracking-wide opacity-90 hidden bg-brand-900/30 p-6 rounded-3xl border border-brand-800/50 backdrop-blur-sm shadow-inner"></div>
                 </div>
+
+                <!-- 공유하기 영역 -->
+                <div id="share-section" class="pt-10 w-full space-y-4 fade-in">
+                    <p class="text-[11px] text-brand-400 font-light tracking-widest text-center uppercase" data-i18n="share_title">결과 공유하기</p>
+                    <div id="share-buttons-container" class="flex justify-center space-x-2">
+                        <!-- 앱에서 언어별로 동적 렌더링 -->
+                    </div>
+                </div>
             </div>
 
             <button onclick="resetApp()" class="w-full py-4 mt-6 bg-brand-100 text-brand-950 hover:bg-white rounded-2xl font-medium text-[13px] tracking-wide transition-all shadow-xl shadow-white/5 active:scale-[0.98]" data-i18n="reset_btn">
                 새로운 분석 시작
             </button>
+            
+            <!-- 워터마크 (캡처용 숨김 요소) -->
+            <div id="watermark" class="hidden absolute bottom-6 left-0 right-0 text-center text-[10px] text-brand-400 font-light tracking-widest opacity-80 z-50">
+                L I N E A - palmistry-five.vercel.app
+            </div>
         </section>
     </main>
 
