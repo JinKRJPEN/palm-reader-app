@@ -22,6 +22,9 @@ const loadingTexts = [
 let loadingInterval;
 let currentBase64Image = '';
 
+// 개발용 백엔드 주소 (실제 배포 시 해당 서버 URL로 변경해야 함)
+const BACKEND_URL = 'http://127.0.0.1:5000/api/analyze';
+
 function handleImageUpload(event) {
     const file = event.target.files[0];
     if (!file) return;
@@ -36,15 +39,6 @@ function handleImageUpload(event) {
 
 function startAnalysis(base64Image) {
     currentBase64Image = base64Image;
-    const apiKeyInput = document.getElementById('api-key');
-    const apiKey = apiKeyInput ? apiKeyInput.value.trim() : '';
-
-    if (!apiKey) {
-        alert('API Key를 입력해주세요.');
-        return;
-    }
-
-    localStorage.setItem('gemini_api_key', apiKey);
 
     uploadSection.style.display = 'none';
     loadingSection.classList.remove('hidden');
@@ -59,7 +53,7 @@ function startAnalysis(base64Image) {
         loadingTextElement.innerText = loadingTexts[textIndex];
     }, 1200);
 
-    analyzeWithGemini(base64Image, apiKey)
+    analyzeWithGemini(base64Image)
         .then(data => {
             clearInterval(loadingInterval);
             showResults(data);
@@ -71,10 +65,8 @@ function startAnalysis(base64Image) {
         });
 }
 
-async function analyzeWithGemini(base64Image, apiKey) {
+async function analyzeWithGemini(base64Image) {
     const base64Data = base64Image.split(',')[1];
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
-
     const prompt = `당신은 현대적이고 세련된 감각을 지닌 데이터 기반 성향 분석가입니다. 손바닥 사진의 선(생명선, 두뇌선, 감정선) 패턴을 시각적 데이터로 해석하여, 깊이 있고 차분한 톤의 에세이처럼 작성해주세요.
 
 [중요 규칙]
@@ -91,31 +83,18 @@ async function analyzeWithGemini(base64Image, apiKey) {
   "reading": "순수한 텍스트로 작성된 세련된 분석 내용 (줄바꿈 포함)"
 }`;
 
-    const response = await fetch(url, {
+    const response = await fetch(BACKEND_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            contents: [{
-                parts: [
-                    { text: prompt },
-                    {
-                        inline_data: {
-                            mime_type: "image/jpeg",
-                            data: base64Data
-                        }
-                    }
-                ]
-            }],
-            generationConfig: {
-                response_mime_type: "application/json",
-                temperature: 0.6
-            }
+            image: base64Data,
+            prompt: prompt
         })
     });
 
     if (!response.ok) {
         const errData = await response.json();
-        throw new Error(errData.error?.message || 'API 요청 실패');
+        throw new Error(errData.error || 'API 요청 실패');
     }
 
     const data = await response.json();
@@ -155,21 +134,11 @@ function showResults(data) {
 }
 
 async function analyzeDeepDive(topic) {
-    const apiKeyInput = document.getElementById('api-key');
-    const apiKey = apiKeyInput ? apiKeyInput.value.trim() : '';
-
-    if (!apiKey) {
-        alert('API Key를 다시 확인해주세요.');
-        return;
-    }
-
     const deepDiveResult = document.getElementById('deep-dive-result');
     deepDiveResult.classList.remove('hidden');
     deepDiveResult.innerHTML = '<span class="animate-pulse text-brand-400 text-sm">해당 영역을 심층 분석 중입니다...</span>';
 
     const base64Data = currentBase64Image.split(',')[1];
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
-
     let topicName = '';
     if (topic === 'career') topicName = '사업/직업운 (운명선과 사업선 중심)';
     else if (topic === 'wealth') topicName = '금전운 (재물선과 태양선 중심)';
@@ -184,24 +153,12 @@ async function analyzeDeepDive(topic) {
 4. JSON 형식이 아닌, 순수한 텍스트 문자열(에세이 형태)만 그대로 출력하세요.`;
 
     try {
-        const response = await fetch(url, {
+        const response = await fetch(BACKEND_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                contents: [{
-                    parts: [
-                        { text: prompt },
-                        {
-                            inline_data: {
-                                mime_type: "image/jpeg",
-                                data: base64Data
-                            }
-                        }
-                    ]
-                }],
-                generationConfig: {
-                    temperature: 0.6
-                }
+                image: base64Data,
+                prompt: prompt
             })
         });
 
@@ -264,11 +221,3 @@ function resetApp() {
     
     document.getElementById('camera-input').value = '';
 }
-
-window.addEventListener('DOMContentLoaded', () => {
-    const savedKey = localStorage.getItem('gemini_api_key');
-    if (savedKey) {
-        const apiKeyInput = document.getElementById('api-key');
-        if(apiKeyInput) apiKeyInput.value = savedKey;
-    }
-});
