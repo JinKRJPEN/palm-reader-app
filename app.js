@@ -491,6 +491,13 @@ async function saveResultAsImage() {
     const deepDiveWasHidden = deepDiveSec.classList.contains('hidden');
     if(deepDiveSec) deepDiveSec.style.display = 'none';
     
+    // Fix html2canvas glassmorphism darkening bug
+    const indexCard = target.querySelector('.shadow-inner');
+    if (indexCard) {
+        indexCard.classList.remove('bg-brand-900/40', 'backdrop-blur-sm');
+        indexCard.classList.add('bg-[#1a1a1a]'); // Use a solid dark color
+    }
+    
     // Add padding to target for better image composition
     target.classList.add('pt-12', 'pb-16');
     target.classList.remove('pt-4', 'pb-12');
@@ -499,7 +506,8 @@ async function saveResultAsImage() {
         const canvas = await html2canvas(target, {
             backgroundColor: '#0a0a0a',
             scale: 2,
-            useCORS: true
+            useCORS: true,
+            logging: false
         });
         const link = document.createElement('a');
         link.download = 'LINEA_Result.png';
@@ -516,6 +524,10 @@ async function saveResultAsImage() {
     if(resetBtn) resetBtn.style.display = 'block';
     if(imgPreview) imgPreview.style.display = 'block';
     if(deepDiveSec) deepDiveSec.style.display = deepDiveWasHidden ? '' : 'block';
+    if(indexCard) {
+        indexCard.classList.add('bg-brand-900/40', 'backdrop-blur-sm');
+        indexCard.classList.remove('bg-[#1a1a1a]');
+    }
     
     target.classList.remove('pt-12', 'pb-16');
     target.classList.add('pt-4', 'pb-12');
