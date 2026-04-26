@@ -406,16 +406,8 @@ async function analyzeDeepDive(topic) {
 }
 
 function typeWriterEffect(element, text, speed) {
-    let i = 0;
-    const cleanText = text.replace(/\*\*/g, '').replace(/\*/g, '').replace(/#/g, '');
-    function type() {
-        if (i < cleanText.length) {
-            element.innerHTML += cleanText.charAt(i) === '\n' ? '<br>' : cleanText.charAt(i);
-            i++;
-            setTimeout(type, speed);
-        }
-    }
-    type();
+    const cleanText = text.replace(/\*\*/g, '').replace(/\*/g, '').replace(/#/g, '').replace(/\n/g, '<br>');
+    element.innerHTML = cleanText;
 }
 
 function animateValue(obj, start, end, duration) {
