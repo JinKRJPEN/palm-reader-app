@@ -25,6 +25,14 @@ const i18n = {
         share_title: "결과 공유 및 저장",
         privacy_notice: "※ 업로드된 사진은 수집되지 않으며 즉시 폐기됩니다.<br>본 서비스의 결과는 오락용으로만 즐겨주세요.",
         err_rate_limit: "오늘 미래를 너무 많이 엿보셨군요! 🔮\n더 이상의 천기누설은 위험합니다. 잠시 쉬었다가 나중에 다시 찾아주세요!",
+        about_title: "손금 분석 가이드",
+        about_q1: "Q. 손금이란 무엇인가요?",
+        about_a1: "손금(Palmistry)은 고대 인도, 중국, 그리스에서 기원한 분석 학문으로, 손바닥의 선과 굴곡을 통해 개인의 성향과 잠재적 경로를 파악하는 도구입니다.",
+        about_q2: "Q. 어떤 정보를 알 수 있나요?",
+        about_a2: "가장 대표적인 3대 선을 통해 다음을 유추합니다.<br><br>• <b>생명선:</b> 생명력, 건강 상태, 주요한 변화<br>• <b>두뇌선:</b> 사고방식, 지적 성향, 직업적 적성<br>• <b>감정선:</b> 정서적 특징, 대인관계 및 연애 패턴",
+        about_q3: "Q. 얼마나 신뢰할 수 있나요?",
+        about_a3: "손금은 확정된 '운명'을 보여주는 예언이 아닙니다. 손바닥의 선은 평소의 근육 사용, 생활 습관, 스트레스에 따라 후천적으로 변합니다. 따라서 손금은 <b>'현재 나의 상태와 잠재력을 비춰주는 거울'</b>이자, 더 나은 미래를 위한 참고 자료로 활용하는 것이 가장 바람직합니다.",
+        close_btn: "닫기",
         ai_prompt: `당신은 세련된 감각을 지닌 데이터 기반 성향 분석가입니다. 제공된 손바닥 사진의 선(생명선, 두뇌선, 감정선) 패턴을 읽어 차분하고 정제된 에세이 톤으로 분석하세요. 한국어로 응답하세요.
 [규칙]
 1. 과장된 감탄사나 점쟁이 말투는 절대 쓰지 마세요.
@@ -58,6 +66,14 @@ const i18n = {
         share_title: "Share Your Result",
         privacy_notice: "※ Photos are discarded immediately without being collected.<br>This service is for entertainment purposes only.",
         err_rate_limit: "You've peeked into your future a bit too much today! 🔮\nThe universe needs a break. Please try again later!",
+        about_title: "Guide to Palmistry",
+        about_q1: "Q. What is Palmistry?",
+        about_a1: "Palmistry is an ancient analytical practice originating from India, China, and Greece. It uses the lines and shapes of your hands to understand your character and potential life paths.",
+        about_q2: "Q. What information does it reveal?",
+        about_a2: "It primarily analyzes the three major lines:<br><br>• <b>Life Line:</b> Vitality, health, and major life shifts.<br>• <b>Head Line:</b> Thought processes, intellect, and career aptitude.<br>• <b>Heart Line:</b> Emotional state, and relationship patterns.",
+        about_q3: "Q. How reliable is it?",
+        about_a3: "Palmistry is not a deterministic prophecy. The lines on your palm can change over time depending on your muscle usage, lifestyle, and stress levels. It is best used as a <b>'mirror reflecting your current state and potential'</b>, serving as a psychological guide for making better choices.",
+        close_btn: "Close",
         ai_prompt: `You are a modern, sophisticated data-driven palmistry analyst. Analyze the palm lines and write a calming, refined essay. Respond in natural, elegant English.
 [Rules]
 1. No exaggerated fortune-teller tropes.
@@ -91,6 +107,14 @@ Respond ONLY with this JSON:
         share_title: "結果を保存・シェア",
         privacy_notice: "※ 写真は収集されず、直ちに破棄されます。<br>本サービスの結果はエンターテインメント目的としてのみお楽しみください。",
         err_rate_limit: "今日、未来を覗き見すぎましたね！ 🔮\nこれ以上の天機漏洩は危険です。少し休んでからまたお越しください！",
+        about_title: "手相分析ガイド",
+        about_q1: "Q. 手相とは何ですか？",
+        about_a1: "手相(Palmistry)は、古代インド、中国、ギリシャを起源とする分析学問で、手のひらの線や形を通じて個人の性質や潜在的な経路を読み解くツールです。",
+        about_q2: "Q. どのような情報がわかりますか？",
+        about_a2: "主に3つの主要な線から以下を推測します。<br><br>• <b>生命線:</b> 生命力、健康状態、人生の大きな変化<br>• <b>頭脳線:</b> 思考パターン、知的能力、職業的適性<br>• <b>感情線:</b> 感情の傾向、対人関係や恋愛のパターン",
+        about_q3: "Q. どのくらい信頼できますか？",
+        about_a3: "手相は確定された「運命」を示す予言ではありません。手のひらの線は、普段の筋肉の使い方、生活習慣、ストレスによって後天的に変化します。したがって、手相は<b>「現在の自分の状態と潜在能力を映す鏡」</b>であり、より良い未来のための参考資料として活用するのが最も望ましいです。",
+        close_btn: "閉じる",
         ai_prompt: `あなたは現代的で洗練されたデータ主導の手相アナリストです。提供された手相のパターンを分析し、落ち着いた洗練されたエッセイのように解釈してください。自然で洗練された日本語で答えてください。
 [ルール]
 1. 古い占い師のような誇張された表現は使わないでください。
@@ -513,6 +537,21 @@ function shareTo(platform) {
         } else {
             alert("이 브라우저에서는 기본 공유 기능을 지원하지 않습니다.");
         }
+    }
+}
+
+function toggleAbout() {
+    const modal = document.getElementById('about-modal');
+    if (modal.classList.contains('hidden')) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        setTimeout(() => modal.classList.remove('opacity-0'), 10);
+    } else {
+        modal.classList.add('opacity-0');
+        setTimeout(() => {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }, 300);
     }
 }
 
