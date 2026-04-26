@@ -424,6 +424,8 @@ function animateValue(obj, start, end, duration) {
 }
 
 function resetApp() {
+    document.getElementById('loading-section').classList.add('hidden');
+    document.getElementById('loading-section').classList.remove('flex');
     document.getElementById('result-section').classList.add('hidden');
     document.getElementById('result-section').classList.remove('flex');
     document.getElementById('upload-section').style.display = 'flex';
