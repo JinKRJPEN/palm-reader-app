@@ -22,8 +22,8 @@ const loadingTexts = [
 let loadingInterval;
 let currentBase64Image = '';
 
-// 개발용 백엔드 주소 (실제 배포 시 해당 서버 URL로 변경해야 함)
-const BACKEND_URL = 'http://127.0.0.1:5000/api/analyze';
+// 실제 배포된 Render 백엔드 주소
+const BACKEND_URL = 'https://palm-reader-app-anx0.onrender.com/api/analyze';
 
 function handleImageUpload(event) {
     const file = event.target.files[0];
